@@ -1,48 +1,85 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Subir imagen con JavaScript</title>
-  <style>
-    body { font-family: Arial; padding: 2rem; background: #f4f4f4; }
-    input, button { margin: 1rem 0; }
-    img { max-width: 300px; margin-top: 1rem; border: 1px solid #ccc; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Pueblo Querido</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f4f4f4;
+        }
+        header {
+            background-color: #2d6a4f;
+            color: white;
+            padding: 1em;
+            text-align: center;
+        }
+        nav {
+            background-color: #40916c;
+            padding: 1em;
+            text-align: center;
+        }
+        nav a {
+            color: white;
+            margin: 0 1em;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        section {
+            padding: 2em;
+            background-color: white;
+            margin: 1em;
+            border-radius: 8px;
+        }
+        footer {
+            background-color: #2d6a4f;
+            color: white;
+            text-align: center;
+            padding: 1em;
+            position: relative;
+            bottom: 0;
+        }
+    </style>
 </head>
 <body>
-  <h2>📷 Subir imagen a Imgur (sin PHP)</h2>
-  <input type="file" id="imagen" accept="image/*">
-  <button onclick="subirImagen()">Subir Imagen</button>
-  <p id="resultado"></p>
-  <img id="preview" src="" alt="">
 
-  <script>
-    async function subirImagen() {
-      const archivo = document.getElementById('imagen').files[0];
-      if (!archivo) return alert("Selecciona una imagen");
+    <header>
+        <h1>Bienvenidos a [Nombre de tu pueblo]</h1>
+    </header>
 
-      const formData = new FormData();
-      formData.append("image", archivo);
+    <nav>
+        <a href="#historia">Historia</a>
+        <a href="#lugares">Lugares</a>
+        <a href="#comida">Comida</a>
+        <a href="#contacto">Contacto</a>
+    </nav>
 
-      const clientId = "YOUR_CLIENT_ID"; // ← Reemplaza esto con tu CLIENT_ID de Imgur
+    <section id="historia">
+        <h2>Historia</h2>
+        <p>Aquí puedes contar la historia de tu pueblo: cuándo se fundó, quiénes lo habitaron, etc.</p>
+    </section>
 
-      const res = await fetch("https://api.imgur.com/3/image", {
-        method: "POST",
-        headers: {
-          Authorization: "Client-ID " + clientId
-        },
-        body: formData
-      });
+    <section id="lugares">
+        <h2>Lugares Turísticos</h2>
+        <p>Describe los lugares que la gente debería visitar. Puedes agregar fotos más adelante.</p>
+    </section>
 
-      const data = await res.json();
-      if (data.success) {
-        const url = data.data.link;
-        document.getElementById("resultado").innerText = "Imagen subida: " + url;
-        document.getElementById("preview").src = url;
-      } else {
-        alert("Error al subir: " + data.data.error);
-      }
-    }
-  </script>
+    <section id="comida">
+        <h2>Comida Típica</h2>
+        <p>Menciona los platos tradicionales, festividades gastronómicas o recetas populares.</p>
+    </section>
+
+    <section id="contacto">
+        <h2>Contacto</h2>
+        <p>Coloca aquí un correo, teléfono o formulario para recibir mensajes.</p>
+    </section>
+
+    <footer>
+        &copy; 2025 Tu Nombre - Todos los derechos reservados
+    </footer>
+
 </body>
 </html>
