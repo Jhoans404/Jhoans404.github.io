@@ -1,125 +1,48 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <meta name="keywords" content="portafolio, Jhoans Aaron, desarrollo web, inteligencia artificial, estudiante de ingeniería de sistemas" />
-  <title>Jhoans - Portafolio</title>
+  <meta charset="UTF-8">
+  <title>Subir imagen con JavaScript</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      line-height: 1.6;
-      background: #f5f5f5;
-      color: #333;
-    }
-
-    header {
-      background: #1e1e2f;
-      color: white;
-      padding: 1rem 2rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-    }
-
-    header nav a {
-      color: white;
-      margin-left: 1rem;
-      text-decoration: none;
-      transition: color 0.3s;
-    }
-
-    header nav a:hover {
-      color: #ffcc00;
-    }
-
-    .hero {
-      padding: 4rem 2rem;
-      background: linear-gradient(to right, #4facfe, #00f2fe);
-      color: white;
-      text-align: center;
-    }
-
-    .seccion {
-      padding: 3rem 2rem;
-      background: white;
-      margin: 1rem 2rem;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
-
-    ul {
-      list-style: square inside;
-      margin-top: 1rem;
-    }
-
-    footer {
-      text-align: center;
-      padding: 1rem;
-      background: #1e1e2f;
-      color: white;
-    }
-
-    @media (max-width: 600px) {
-      header {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-
-      header nav {
-        margin-top: 0.5rem;
-      }
-
-      .seccion {
-        margin: 1rem 1rem;
-      }
-    }
+    body { font-family: Arial; padding: 2rem; background: #f4f4f4; }
+    input, button { margin: 1rem 0; }
+    img { max-width: 300px; margin-top: 1rem; border: 1px solid #ccc; }
   </style>
 </head>
 <body>
-  <header>
-    <h1>👨‍💻 Jhoans Aaron</h1>
-    <nav>
-      <a href="#sobre-mi">Sobre mí</a>
-      <a href="#proyectos">Proyectos</a>
-      <a href="#contacto">Contacto</a>
-    </nav>
-  </header>
+  <h2>📷 Subir imagen a Imgur (sin PHP)</h2>
+  <input type="file" id="imagen" accept="image/*">
+  <button onclick="subirImagen()">Subir Imagen</button>
+  <p id="resultado"></p>
+  <img id="preview" src="" alt="">
 
-  <section class="hero">
-    <h2>Bienvenido a mi portafolio</h2>
-    <p>Soy estudiante de Ingeniería de Sistemas apasionado por el desarrollo web y la inteligencia artificial.</p>
-  </section>
+  <script>
+    async function subirImagen() {
+      const archivo = document.getElementById('imagen').files[0];
+      if (!archivo) return alert("Selecciona una imagen");
 
-  <section id="sobre-mi" class="seccion">
-    <h2>Sobre mí</h2>
-    <p>Hola, soy Jhoans. Me encanta crear soluciones útiles con tecnología, desde sitios web hasta sistemas de gestión académica.</p>
-  </section>
+      const formData = new FormData();
+      formData.append("image", archivo);
 
-  <section id="proyectos" class="seccion">
-    <h2>Proyectos</h2>
-    <ul>
-      <li>💡 Sistema de gestión académica en Oracle</li>
-      <li>📱 App móvil para reserva de espacios universitarios</li>
-      <li>🔐 Encriptación de contraseñas en Java</li>
-    </ul>
-  </section>
+      const clientId = "YOUR_CLIENT_ID"; // ← Reemplaza esto con tu CLIENT_ID de Imgur
 
-  <section id="contacto" class="seccion">
-    <h2>Contacto</h2>
-    <p>📧 jhoans@example.com</p>
-    <p>📍 Perú</p>
-  </section>
+      const res = await fetch("https://api.imgur.com/3/image", {
+        method: "POST",
+        headers: {
+          Authorization: "Client-ID " + clientId
+        },
+        body: formData
+      });
 
-  <footer>
-    <p>© 2025 Jhoans Aaron Castillo Chumacero</p>
-  </footer>
+      const data = await res.json();
+      if (data.success) {
+        const url = data.data.link;
+        document.getElementById("resultado").innerText = "Imagen subida: " + url;
+        document.getElementById("preview").src = url;
+      } else {
+        alert("Error al subir: " + data.data.error);
+      }
+    }
+  </script>
 </body>
 </html>
